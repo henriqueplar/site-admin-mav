@@ -26,7 +26,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ route('properties.index') }}" class="block transition hover:text-gray-700"> Imóveis </a>
+                    <a href="{{ route('contracts.index') }}" class="block transition hover:text-gray-700"> Contratos </a>
                 </li>
 
                 <li class="rtl:rotate-180">
@@ -38,7 +38,7 @@
                 </li>
 
                 <li>
-                    <span class="block transition"> {{ $property->address }} </span>
+                    <a href="#" class="block transition hover:text-gray-700"> {{ $contract->id }} </a>
                 </li>
             </ol>
         </nav>
@@ -49,7 +49,7 @@
 
             {{-- UPDATE --}}
             <div>
-                <button onclick="updatePropertyModal.showModal()"
+                <button onclick="updateContractModal.showModal()"
                     class="inline-block border-e p-3 text-gray-700 hover:bg-gray-50 focus:relative" title="Edit">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-4">
@@ -58,15 +58,15 @@
                     </svg>
                 </button>
 
-                <dialog id="updatePropertyModal" class="modal">
+                <dialog id="updateContractModal" class="modal">
                     <div class="modal-box bg-white">
                         <div class="flex justify-between items-center">
-                            <h1 class="text-lg text-black">Editar Imóvel</h1>
+                            <h1 class="text-lg text-black">Editar Contrato</h1>
                             <form method="dialog">
                                 <button class="btn btn-sm btn-circle btn-ghost">✕</button>
                             </form>
                         </div>
-                        @include('properties.edit')
+                        @include('contracts.edit')
                     </div>
                     <form method="dialog" class="modal-backdrop">
                         <button>close</button>
@@ -76,12 +76,12 @@
 
 
             {{-- DELETE --}}
-            <form action="{{ route('properties.destroy', $property) }}" method="POST"
-                onsubmit="return confirm('Tem certeza que deseja excluir este imóvel?');" class="inline-block">
+            <form action="{{ route('contracts.destroy', $contract) }}" method="POST"
+                onsubmit="return confirm('Tem certeza que deseja excluir este Corretor?');" class="inline-block">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="inline-block p-3 text-gray-700 hover:bg-gray-50 focus:relative"
-                    title="Excluir Imóvel">
+                    title="Excluir Contrato">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="red" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -96,24 +96,19 @@
     <div class="card bg-white max-w-3xl shadow-xl mx-auto text-black mb-7">
         <div class="card-body">
             <div class="flex justify-between">
-                <h2 class="card-title">{{ $property->address }}</h2>
-                <span
-                    class="whitespace-nowrap rounded-full  px-2.5 py-0.5 text-sm {{ $property->status == 'Disponível' ? 'text-green-700 bg-green-100' : ($property->status == 'Alugado' ? 'text-orange-700 bg-orange-100' : 'text-red-700 bg-red-100') }}">
-                    {{ $property->status }}
-                </span>
+                <h2 class="card-title">{{ $contract->id }}</h2>
+                {{-- <span class="whitespace-nowrap rounded-full  px-2.5 py-0.5 text-sm {{ $agent->status == 'Ativo' ? 'text-green-700 bg-green-100' : 'text-gray-700 bg-gray-100' }}">
+                    {{ $agent->status }}
+                </span> --}}
             </div>
 
             <table class="table text-sm">
                 <tr>
-                    <td class="font-bold flex gap-2 items-center">Código</td>
-                    <td>{{$property->id}}</td>
-                </tr>
-                <tr>
-                    <td class="font-bold flex gap-2 items-center">Cliente</td>
+                    <td class="font-bold flex gap-2 items-center">Imóvel</td>
                     <td>
-                        <a href="{{ route('customers.show', $property->customer) }}" class="flex gap-2 text-blue-700"
+                        <a href="{{ route('properties.show', $contract->property) }}" class="flex gap-2 text-blue-700"
                             target="blank">
-                            {{ $property->customer->name }}
+                            {{ $contract->property->address }}
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-4">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -122,24 +117,50 @@
                         </a>
                     </td>
                 </tr>
+
+                <tr>
+                    <td class="font-bold flex gap-2 items-center">Corretor</td>
+                    <td>
+                        <a href="{{ route('agents.show', $contract->agent) }}" class="flex gap-2 text-blue-700"
+                            target="blank">
+                            {{ $contract->agent->name }}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="font-bold flex gap-2 items-center">Cliente</td>
+                    <td>
+                        <a href="{{ route('customers.show', $contract->customer) }}" class="flex gap-2 text-blue-700"
+                            target="blank">
+                            {{ $contract->customer->name }}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="font-bold flex gap-2 items-center">Valor Total</td>
+                    <td>R${{ number_format($contract->amount, 2, ',', '.') }}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div>
+                            Linhas do Contrato
+                        </div>
+                    </td>
+                </tr>
             </table>
         </div>
     </div>
-
-    {{-- CONTRACTS --}}
-    @if (count($property->contracts) > 0)
-        <div class="card bg-white max-w-3xl shadow-xl mx-auto text-black mb-7">
-            <div class="card-body">
-                <h2 class="card-title">Contratos</h2>
-
-                <table class="table text-sm">
-                    <thead>
-
-                    </thead>
-                </table>
-            </div>
-        </div>
-    @endif
-
-
 </x-app-layout>

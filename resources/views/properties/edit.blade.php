@@ -16,9 +16,9 @@
                 <div class="mt-4">
                     <x-label for="status" value="{{ __('Status') }}" />
                     <select name="status" id="status" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                        <option value="disponível" {{ $property->status === 'disponível' ? 'selected' : '' }}>Disponível</option>
-                        <option value="vendido" {{ $property->status === 'vendido' ? 'selected' : '' }}>Vendido</option>
-                        <option value="alugado" {{ $property->status === 'alugado' ? 'selected' : '' }}>Alugado</option>
+                        <option value="Disponível" {{ $property->status === 'Disponível' ? 'selected' : '' }}>Disponível</option>
+                        {{-- <option value="Vendido" {{ $property->status === 'Vendido' ? 'selected' : '' }}>Vendido</option> --}}   
+                        <option value="Alugado" {{ $property->status === 'Alugado' ? 'selected' : '' }}>Alugado</option>
                     </select>
                 </div>
 

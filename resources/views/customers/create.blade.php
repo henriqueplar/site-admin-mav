@@ -5,12 +5,13 @@
                         @csrf
 
                         <div>
-                            <fieldset class="flex justify-between w-full">
-                                <legend class="sr-only">Tipo</legend>
+                            <x-label for="document" value="{{ __('Tipo de Cliente') }}" />
+                            <fieldset class="flex justify-between w-full mt-1">
+                                <legend class="sr-only">Tipo de Cliente</legend>
 
                                 <div class="w-[48%]">
                                     <label for="pessoa-fisica"
-                                        class="flex cursor-pointer items-center justify-center rounded-md border border-gray-100 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-500 has-[:checked]:text-white">
+                                        class="flex cursor-pointer items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 has-[:checked]:border-green-500 has-[:checked]:bg-green-700 has-[:checked]:text-white">
                                         <input type="radio" name="type" value="Pessoa Física" class="sr-only"
                                             id="pessoa-fisica" />
                                         <p class="text-sm font-medium">Pessoa Física</p>
@@ -19,7 +20,7 @@
 
                                 <div class="w-[48%]">
                                     <label for="pessoa-juridica"
-                                        class="flex cursor-pointer items-center justify-center rounded-md border border-gray-100 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-500 has-[:checked]:text-white">
+                                        class="flex cursor-pointer items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 hover:border-gray-200 has-[:checked]:border-green-500 has-[:checked]:bg-green-700 has-[:checked]:text-white">
                                         <input type="radio" name="type" value="Pessoa Jurídica" class="sr-only"
                                             id="pessoa-juridica" />
                                         <p class="text-sm font-medium">Pessoa Jurídica</p>

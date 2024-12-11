@@ -6,9 +6,13 @@
 
 
 <x-app-layout>
-    <x-slot name="header">
+
+    {{-- HEADER --}}
+    <div class="flex w-full px-6 py-4 justify-between -z-10 items-center">
+
+        {{-- BREADCRUMB --}}
         <nav aria-label="Breadcrumb">
-            <ol class="flex items-center gap-1 text-sm text-gray-600">
+            <ol class="flex items-center gap-1 text-sm text-black">
                 <li>
                     <a href="{{ route('dashboard') }}" class="block transition hover:text-gray-700">
                         <span class="sr-only"> Home </span>
@@ -34,101 +38,69 @@
                 </li>
             </ol>
         </nav>
-    </x-slot>
-
-    <div class="bg-white dark:bg-gray-800 shadow flex w-full p-3 justify-between bg -z-10">
-        <div></div>
 
 
-        <x-button data-modal-toggle="addCustomerModal">
-            + Adicionar Cliente
-        </x-button>
+        {{-- NEW CUSTOMER BUTTON --}}
+        <div>
+            <x-button onclick="addCustomerModal.showModal()">+ Adicionar Cliente</x-button>
 
 
-        <div id="addCustomerModal" tabindex="-1" aria-hidden="true"
-            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
-
-
-            <div class="relative p-4 w-full max-w-xl h-full md:h-auto">
-                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                    <div class="flex justify-between items-center p-4 rounded-t border-b dark:border-gray-600">
-                            <h2 class="dark:text-white text-black text-xl font-bold">Novo Cliente</h2>
-                        <button type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                            data-modal-toggle="addCustomerModal">
-
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                        </button>
+            {{-- MODAL --}}
+            <dialog id="addCustomerModal" class="modal">
+                <div class="modal-box bg-white">
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-lg text-black">Adicionar Cliente</h1>
+                        <form method="dialog">
+                            <button class="btn btn-sm btn-circle btn-ghost">✕</button>
+                        </form>
                     </div>
-                    <div class="">
-                        @include('customers.create')
-                    </div>
+                    @include('customers.create')
                 </div>
-            </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
         </div>
-
     </div>
 
-    <x-table :headers="$headers">
-        @if (count($customers) != 0)
-            @foreach ($customers as $customer)
-                <tr>
-                    <td class="font-bold text-black">{{ $customer->name }}</td>
-                    <td class="text-black">{{ $customer->email }}</td>
-                    <td class="text-black">{{ $customer->phone }}</td>
-                    <td class="text-black">
-                        <a href="{{ route('customers.show', $customer) }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-6 m-auto">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                            </svg>
-                            <span class="sr-only">Botão Detalhes</span>
-                        </a>
-                    </td>
-                </tr>
-            @endforeach
-        @else
-            <tr class="text-center">
-                <td colspan="10" class="">Sem resultados disponíveis.</td>
-            </tr>
-        @endif
-    </x-table>
-
-    {{-- <table class="table table-striped overflow-clip">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>E-mail</th>
-                    <th>Contato</th>
-                    <th>Detalhes</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($customers as $customer)
+    {{-- DATA --}}
+    <div class="card bg-white shadow-xl mx-6 mb-7">
+        <div class="card-body">
+            <table class="table overflow-clip">
+                <thead class="">
                     <tr>
-                        <td class="font-bold">{{ $customer->name }}</td>
-                        <td>{{ $customer->email }}</td>
-                        <td>{{ $customer->phone }}</td>
-                        <td>
-                            <a href="{{ route('customers.show', $customer) }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="size-4 m-auto">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                                </svg>
-                                <span class="sr-only">Botão Detalhes</span>
-                            </a>
-                        </td>
+                        @foreach ($headers as $header)
+                            <th class="">{{ $header }}</th>
+                        @endforeach
+                        <th>Ação</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table> --}}
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+                </thead>
+                <tbod>
+                    @if (count($customers) != 0)
+                        @foreach ($customers as $customer)
+                            <tr>
+                                <td class="font-bold text-black">{{ $customer->name }}</td>
+                                <td class="text-gray-500">{{ $customer->email }}</td>
+                                <td class="text-gray-500">{{ $customer->phone }}</td>
+                                <td class="text-gray-500">
+                                    <a href="{{ route('customers.show', $customer) }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 m-auto hover:bg-gray-300 rounded-lg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                          </svg>
+                                          
+                                        <span class="sr-only">Botão Detalhes</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr class="text-center">
+                            <td colspan="10" class="">Sem resultados disponíveis.</td>
+                        </tr>
+                    @endif
+                    </tbody>
+            </table>
+        </div>
+    </div>
 </x-app-layout>

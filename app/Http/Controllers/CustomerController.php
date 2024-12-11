@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contract;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class CustomerController extends Controller
     // GET - /customers - Exibe uma lista de clientes
     public function index()
     {
-        $customers = Customer::all();
+        $customers = Customer::all()->sortBy('name');
 
         return view('customers.index', ['customers' => $customers]);
     }
@@ -43,6 +44,7 @@ class CustomerController extends Controller
 
     public function show(Customer $customer)
     {
+
         return view('customers.show', compact('customer'));
     }
 

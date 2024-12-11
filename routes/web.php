@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PropertyController;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +26,6 @@ Route::middleware([
     Route::resource('agents', AgentController::class);
 
     Route::resource('properties', PropertyController::class);
+
+    Route::resource('contracts', ContractController::class);
 });

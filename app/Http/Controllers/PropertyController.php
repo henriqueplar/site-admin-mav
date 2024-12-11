@@ -10,7 +10,7 @@ class PropertyController extends Controller
 {
     public function index()
     {
-        $properties = Property::with('customer')->get(); // Eager loading para evitar o problema N+1
+        $properties = Property::with('customer')->get()->sortBy(['status', 'address']); // Eager loading para evitar o problema N+1
         $customers = Customer::all();
         return view('properties.index', compact('properties', 'customers'));
     }
@@ -50,7 +50,7 @@ class PropertyController extends Controller
     {
         $request->validate([
             'address' => 'required|string|max:255',
-            'status' => 'required|string|in:disponível,vendido,alugado',
+            'status' => 'required|string|in:Disponível,Vendido,Alugado',
             'customer_id' => 'required|exists:customers,id',
         ]);
 

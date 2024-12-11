@@ -11,7 +11,7 @@ class AgentController extends Controller
     // GET - /Agents - Exibe uma lista de clientes
     public function index()
     {
-        $agents = Agent::all();
+        $agents = Agent::all()->sortBy(['status', 'name']);
 
         return view('agents.index', ['agents' => $agents]);
     }

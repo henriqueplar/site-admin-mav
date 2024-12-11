@@ -12,9 +12,9 @@
                 <div class="mt-4">
                     <x-label for="status" value="{{ __('Status') }}" />
                     <select name="status" id="status" class="block mt-1 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                        <option value="disponível">Disponível</option>
-                        {{-- <option value="vendido">Vendido</option> --}}
-                        <option value="alugado">Alugado</option>
+                        <option value="Disponível">Disponível</option>
+                        {{-- <option value="Vendido">Vendido</option> --}}
+                        <option value="Alugado">Alugado</option>
                     </select>
                 </div>
 

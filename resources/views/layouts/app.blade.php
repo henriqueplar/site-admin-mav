@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="lightMode">
 
 <head>
     <meta charset="utf-8">
@@ -20,7 +20,7 @@
     <link rel="favicon" href={{ asset('favicon.ico') }} type="image/ico">
 </head>
 
-<body class="font-sans antialiased darkMode">
+<body class="font-sans antialiased">
     <x-banner />
 
     <div class="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
