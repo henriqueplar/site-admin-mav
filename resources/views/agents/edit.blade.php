@@ -16,6 +16,13 @@
                 </div>
 
                 <div class="mt-4">
+                    <x-label for="phone" value="{{ __('Telefone') }}" />
+                    <x-input id="phone" class="block mt-1 w-full" type="tel" name="phone"
+                        :value="old('phone', $agent->phone)" required maxlength="15" oninput="formatPhone(this)"/>
+                        <script src="{{ asset('js/format-phone.js') }}"></script>
+                </div>
+
+                <div class="mt-4">
                     <x-label for="creci" value="{{ __('CRECI') }}" />
                     <x-input id="creci" class="block mt-1 w-full" type="text" name="creci" :value="old('creci', $agent->CRECI)" />
                 </div>

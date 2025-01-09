@@ -7,59 +7,60 @@ use Illuminate\Http\Request;
 
 class AgentController extends Controller
 {
-    //
-    // GET - /Agents - Exibe uma lista de clientes
-    public function index()
-    {
-        $agents = Agent::all();
+
+    private $validate = [];
+
+
+    /* create ----- (/customers/create) ----- GET */
+    public function create(){
+        return view('agents.create');
+    }
+
+    /* create ----- (/customers) ----- POST */
+    public function store(Request $request){
+        $request->validate($this->validate);
+
+        Agent::create($request->all());
+
+        return redirect()->route('agents.index')->with('success', 'Corretor criado com sucesso!');
+    }
+
+
+    /* read all ----- (/customers) ----- GET */
+    public function index(){
+        $agents = Agent::all()->sortBy(['status', 'name']);
 
         return view('agents.index', ['agents' => $agents]);
     }
 
-    // GET - /Agents/{id}/edit - exibe o fomulário do cliente
-    public function edit(Agent $agent)
-    {
+
+    /* read ----- (/customers/{id}) ----- GET */
+    public function show(Agent $agent){
+        return view('agents.show', compact('agent'));
+    }
+
+
+    /* update ----- (/customers/{id}/edit) ----- GET */
+    public function edit(Agent $agent){
         return view('agents.edit', compact('Agent'));
     }
 
 
-    // POST - /Agents - Exibe uma lista de clientes
-    public function update(Request $request, Agent $agent)
-    {
-        $request->validate([
-            // Regras de validação dos campos
-        ]);
+    /* update ----- (/customers/{id}) ----- PUT/PATCH */
+    public function update(Request $request, Agent $agent){
+        $request->validate($this->validate);
 
         $agent->update($request->all());
 
         return redirect()->route('agents.show',  ['agent' => $agent])->with('success', 'Corretor atualizado com sucesso!');
     }
 
-    public function destroy(Agent $agent)
-    {
+    
+    /* delete ----- (/customers/{id}) ----- DESTROY */
+    public function destroy(Agent $agent){
         $agent->delete();
 
         return redirect()->route('agents.index')->with('success', 'Corretor excluído com sucesso!');
     }
 
-    public function show(Agent $agent)
-    {
-        return view('agents.show', compact('agent'));
-    }
-
-    public function create()
-    {
-        return view('agents.create');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            // Regras de validação dos campos
-        ]);
-
-        Agent::create($request->all());
-
-        return redirect()->route('agents.index')->with('success', 'Corretor criado com sucesso!');
-    }
 }

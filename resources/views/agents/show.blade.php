@@ -1,10 +1,8 @@
-@php
-    $color = $agent->status == 'Ativo' ? 'text-green-700 bg-green-100' : 'text-gray-700 bg-gray-100';
-@endphp 
-
 <x-app-layout>
     {{-- HEADER --}}
-    <x-slot name="header">
+    <div class="flex w-full px-6 py-4 justify-between -z-10 items-center">
+
+        {{-- BREADCRUMB --}}
         <nav aria-label="Breadcrumb">
             <ol class="flex items-center gap-1 text-sm text-gray-600">
                 <li>
@@ -44,55 +42,29 @@
                 </li>
             </ol>
         </nav>
-    </x-slot>
 
-    {{-- SUBHEADER --}}
-    <div class="bg-white dark:bg-gray-800 shadow flex w-full p-3 justify-between bg -z-10 items-center">
-        {{-- TAG --}}
-        <div>
-            <span class="whitespace-nowrap rounded-full  px-2.5 py-0.5 text-sm {{$color}}">
-                {{ $agent->status }}
-            </span>
-        </div>
 
         {{-- OPTIONS --}}
         <span class="inline-flex overflow-hidden rounded-md border bg-white shadow-sm">
-            <button data-modal-toggle="updateAgentModal"
-                class="inline-block border-e p-3 text-gray-700 hover:bg-gray-50 focus:relative" title="Edit Product">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-4">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                </svg>
-            </button>
 
-            <div id="updateAgentModal" tabindex="-1" aria-hidden="true"
-                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+            {{-- UPDATE --}}
+            <div>
+                <button onclick="updateAgentModal.showModal()"
+                    class="inline-block border-e p-3 text-gray-700 hover:bg-gray-50 focus:relative" title="Edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                    </svg>
+                </button>
 
-
-                <div class="relative p-4 w-full max-w-xl h-full md:h-auto">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                        <div class="flex justify-between p-4 rounded-t border-b dark:border-gray-600 items-center">
-                            <h2 class="dark:text-white text-black text-xl font-bold">Editar Corretor</h2>
-                            <button type="button"
-                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                data-modal-toggle="updateAgentModal">
-
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="">
-                            @include('agents.edit')
-                        </div>
-                    </div>
-                </div>
+                <x-modal2 id="updateAgentModal" title="Editar Corretor">
+                    @include('agents.edit')
+                </x-modal2>
             </div>
 
+
+            {{-- DELETE --}}
             <form action="{{ route('agents.destroy', $agent) }}" method="POST"
                 onsubmit="return confirm('Tem certeza que deseja excluir este Corretor?');" class="inline-block">
                 @csrf
@@ -109,40 +81,55 @@
         </span>
     </div>
 
-
-    {{-- CONTENT --}}
-    <div class="max-w-4xl mx-auto md:px-6 lg:px-8">
-
-        <div class="md:p-6">
-            <div class="flow-root rounded-lg border border-gray-100 py-3 shadow-sm bg-white md:p-9">
-                <dl class="-my-3 divide-y divide-gray-100 text-sm">
-
-                    <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
-                        <dt class="font-medium text-gray-900">Nome</dt>
-                        <dd class="text-gray-700 sm:col-span-2">{{ $agent->name }}</dd>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
-                        <dt class="font-medium text-gray-900">CRECI</dt>
-                        <dd class="text-gray-700 sm:col-span-2">{{ $agent->CRECI }}</dd>
-                    </div>
-
-                    <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
-                        <dt class="font-medium text-gray-900  flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                class="size-3">
-                                <path
-                                    d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
-                                <path
-                                    d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
-                            </svg>
-                            <span>E-mail</span>
-                        </dt>
-                        <dd class="text-gray-700 sm:col-span-2">{{ $agent->email }}</dd>
-                    </div>
-                </dl>
-            </div>
+    {{-- CARD --}}
+    <x-card type='show'>
+        <div class="flex justify-between">
+            <h2 class="card-title">{{ $agent->name }}</h2>
+            <span class="whitespace-nowrap rounded-full  px-2.5 py-0.5 text-sm {{ $agent->status == 'Ativo' ? 'text-green-700 bg-green-100' : 'text-gray-700 bg-gray-100' }}">
+                {{ $agent->status }}
+            </span>
         </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+
+        <table class="table text-sm">
+            <tr>
+                <td class="font-bold flex gap-2 items-center">CRECI</td>
+                <td>{{ $agent->CRECI }}</td>
+            </tr>
+
+            <tr>
+                <td class="font-bold flex gap-2 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-3">
+                        <path
+                            d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
+                        <path
+                            d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
+                    </svg>
+                    <span>E-mail</span>
+                </td>
+                <td>{{ $agent->email }}</td>
+            </tr>
+
+            <tr>
+                <td class="font-bold flex gap-2 items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-3">
+                        <path fill-rule="evenodd"
+                            d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <span>Contato</span>
+                </td>
+                <td>{{ $agent->phone }}</td>
+            </tr>
+        </table>
+    </x-card>
+
+    {{-- CONTRACTS --}}
+    @if (count($agent->contracts) > 0)
+        <x-card type="show">
+            <h2 class="card-title">Contratos Ativos</h2>
+            
+            @include('contracts.table', ['contracts' => $agent->contracts])
+        </x-card>
+    @endif
+
 </x-app-layout>
