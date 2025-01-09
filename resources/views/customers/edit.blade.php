@@ -52,7 +52,7 @@
                     <x-label for="phone" value="{{ __('Telefone') }}" />
                     <x-input id="phone" class="block mt-1 w-full" type="tel" name="phone" :value="old('phone', $customer->phone)"
                         required oninput="formatPhone(this)" maxlength="15"/>
-                        <script src="{{ asset('js/format-phone.js') }}"></script>
+                        
                 </div>
 
                 <div class="mt-4">
@@ -69,5 +69,7 @@
             </form>
         </div>
     </div>
-    @vite(['resources/js/customers/form.js'])
+
+    <script src="{{ asset('js/format-phone.js') }}"></script>
+    <script src="{{ asset('/js/birthField.js') }}"></script>
 </div>
