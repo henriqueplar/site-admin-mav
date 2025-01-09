@@ -58,20 +58,9 @@
                     </svg>
                 </button>
 
-                <dialog id="updatePropertyModal" class="modal">
-                    <div class="modal-box bg-white">
-                        <div class="flex justify-between items-center">
-                            <h1 class="text-lg text-black">Editar Imóvel</h1>
-                            <form method="dialog">
-                                <button class="btn btn-sm btn-circle btn-ghost">✕</button>
-                            </form>
-                        </div>
-                        @include('properties.edit')
-                    </div>
-                    <form method="dialog" class="modal-backdrop">
-                        <button>close</button>
-                    </form>
-                </dialog>
+                <x-modal2 id="updatePropertyModal" title="Atualizar Imóvel">
+                    @include('properties.edit')
+                </x-modal2>
             </div>
 
 
@@ -93,52 +82,72 @@
     </div>
 
     {{-- CARD --}}
-    <div class="card bg-white max-w-3xl shadow-xl mx-auto text-black mb-7">
-        <div class="card-body">
-            <div class="flex justify-between">
-                <h2 class="card-title">{{ $property->address }}</h2>
-                <span
-                    class="whitespace-nowrap rounded-full  px-2.5 py-0.5 text-sm {{ $property->status == 'Disponível' ? 'text-green-700 bg-green-100' : ($property->status == 'Alugado' ? 'text-orange-700 bg-orange-100' : 'text-red-700 bg-red-100') }}">
-                    {{ $property->status }}
-                </span>
-            </div>
-
-            <table class="table text-sm">
-                <tr>
-                    <td class="font-bold flex gap-2 items-center">Código</td>
-                    <td>{{$property->id}}</td>
-                </tr>
-                <tr>
-                    <td class="font-bold flex gap-2 items-center">Cliente</td>
-                    <td>
-                        <a href="{{ route('customers.show', $property->customer) }}" class="flex gap-2 text-blue-700"
-                            target="blank">
-                            {{ $property->customer->name }}
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                            </svg>
-                        </a>
-                    </td>
-                </tr>
-            </table>
+    <x-card type="show">
+        <div class="flex justify-between">
+            <h2 class="card-title">{{ "$property->street, $property->number $property->complement - $property->neighborhood" }}</h2>
+            <span
+                class="whitespace-nowrap rounded-full  px-2.5 py-0.5 text-sm {{ $property->status == 'Disponível' ? 'text-green-700 bg-green-100' : ($property->status == 'Alugado' ? 'text-orange-700 bg-orange-100' : 'text-red-700 bg-red-100') }}">
+                {{ $property->status }}
+            </span>
         </div>
-    </div>
 
+        <table class="table text-sm">
+            <tr>
+                <td class="font-bold flex gap-2 items-center">Código</td>
+                <td>{{$property->id}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-bold flex gap-2 items-center">Logradouro</td>
+                <td>{{$property->street}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-bold flex gap-2 items-center">Número</td>
+                <td>{{$property->number}}</td>
+            </tr>
+
+            @if ($property->complement)
+            <tr>
+                <td class="font-bold flex gap-2 items-center">Complemento</td>
+                <td>{{$property->complement}}</td>
+            </tr>
+            @endif
+
+            <tr>
+                <td class="font-bold flex gap-2 items-center">Bairro</td>
+                <td>{{$property->neighborhood}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-bold flex gap-2 items-center">Cidade/UF</td>
+                <td>{{"$property->city/$property->state"}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-bold flex gap-2 items-center">Cliente</td>
+                <td>
+                    <a href="{{ route('customers.show', $property->customer) }}" class="flex gap-2 text-blue-700"
+                        target="blank">
+                        {{ $property->customer->name }}
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                        </svg>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </x-card>
+ 
     {{-- CONTRACTS --}}
     @if (count($property->contracts) > 0)
-        <div class="card bg-white max-w-3xl shadow-xl mx-auto text-black mb-7">
-            <div class="card-body">
-                <h2 class="card-title">Contratos</h2>
-
-                <table class="table text-sm">
-                    <thead>
-
-                    </thead>
-                </table>
-            </div>
-        </div>
+        <x-card type="show">
+            <h2 class="card-title">Contratos Ativos</h2>
+            
+            @include('contracts.table', ['contracts' => $property->contracts])
+        </x-card>
     @endif
 
 

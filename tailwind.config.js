@@ -24,6 +24,5 @@ export default {
 		typography,
         require('daisyui'),
 	],
-
-    darkMode: 'class',
+    darkMode: 'selector',
 };

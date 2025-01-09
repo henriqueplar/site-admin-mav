@@ -10,7 +10,8 @@ class Contract extends Model
     use HasFactory;
 
     protected $fillable = [
-        'validity',
+        'start_date',
+        'end_date',
         'property_id',
         'customer_id',
         'agent_id',
@@ -37,8 +38,8 @@ class Contract extends Model
         return $this->hasMany(Installment::class);
     }
 
-    /* public function lines()
+    public function lines()
     {
         return $this->hasMany(ContractLine::class);
-    } */
+    } 
 }

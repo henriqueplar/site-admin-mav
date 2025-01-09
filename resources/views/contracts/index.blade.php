@@ -1,5 +1,5 @@
 @php
-    $headers = ['ID','Imóvel', 'Cliente', 'Agente', 'Valor'];
+    $headers = ['ID','Imóvel', 'Cliente', 'Início', 'Final', 'Valor'];
 @endphp
 
 <x-app-layout>
@@ -61,49 +61,9 @@
     </div>
 
     {{-- DATA --}}
-    <div class="card bg-white shadow-xl mx-6 mb-7">
-        <div class="card-body overflow-x-auto">
-            <table class="table overflow-clip">
-                <thead class="">
-                    <tr>
-                        @foreach ($headers as $header)
-                            <th class="">{{ $header }}</th>
-                        @endforeach
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbod>
-                    @if (count($contracts) != 0)
-                        @foreach ($contracts as $contract)
-                            <tr>
-                                <td class="font-bold text-black">{{ $contract->id }}</td>
-                                <td class="font-bold text-black">{{ $contract->property->address }}</td>
-                                <td class="text-gray-500">{{ $contract->customer->name }}</td>
-                                <td class="text-gray-500">{{ $contract->agent->name }}</td>
-                                <td class="text-gray-500">R${{ number_format($contract->amount, 2, ',', '.') }}</td>
-                                <td class="text-gray-500">
-                                    <a href="{{ route('contracts.show', $contract) }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor"
-                                            class="size-6 m-auto hover:bg-gray-300 rounded-lg">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        </svg>
+    <x-card type="table">
+        @include('contracts.table')
+    </x-card>
 
-                                        <span class="sr-only">Botão Detalhes</span>
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @else
-                        <tr class="text-center">
-                            <td colspan="10" class="">Sem resultados disponíveis.</td>
-                        </tr>
-                    @endif
-                    </tbody>
-            </table>
-        </div>
-    </div>
+    
 </x-app-layout>

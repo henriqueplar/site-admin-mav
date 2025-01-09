@@ -10,7 +10,13 @@ class Property extends Model
     use HasFactory;
 
     protected $fillable = [
-        'address',
+        'street',
+        'number',
+        'complement',
+        'neighborhood',
+        'city',
+        'state',
+        'zip_code',
         'status',
         'customer_id', 
     ];

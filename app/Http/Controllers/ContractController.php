@@ -21,7 +21,7 @@ class ContractController extends Controller
 
     public function create()
     {
-        $properties = Property::where('status', 'disponível')->get();
+        $properties = Property::where('status', 'Disponível')->get();
         $customers = Customer::all();
         $agents = Agent::where('status', 'Ativo')->get();
         return view('contracts.create', compact('properties', 'customers', 'agents'));
@@ -35,6 +35,8 @@ class ContractController extends Controller
             'agent_id' => 'required|exists:agents,id',
             // adicione aqui as regras de validação para os outros campos
         ]);
+
+        //dd($request->all());
 
         Contract::create($request->all());
 
