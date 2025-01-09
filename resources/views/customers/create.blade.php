@@ -70,5 +70,6 @@
             </form>
         </div>
     </div>
-    @vite(['resources/js/customers/birthField.js'])
+    <script src="{{ asset('js/format-phone.js') }}"></script>
+    <script src="{{ asset('/js/birthField.js') }}"></script>
 </div>
