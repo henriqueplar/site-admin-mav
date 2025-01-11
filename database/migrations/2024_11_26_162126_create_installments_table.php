@@ -14,14 +14,16 @@ return new class extends Migration
         Schema::create('installments', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->date('dueDate');
-            $table->integer('number');
-            $table->unsignedBigInteger('contract_id');
+            $table->integer('number')->nullable;
             $table->float('amount', 8, 2);
             $table->string('status');
             
-            // Define a chave estrangeira
-            $table->foreign('contract_id')->references('id')->on('contracts'); 
+            //contract
+            $table->unsignedBigInteger('contract_id');
+            $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade'); 
+
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

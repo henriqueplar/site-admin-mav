@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('agents', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('name');
-            $table->string('email')->unique(); 
-            $table->string('CRECI')->unique();
+            $table->string('email'); 
+            $table->string('CRECI')->nullable();
             $table->string('status');
+            $table->string('phone')->nullable(); 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

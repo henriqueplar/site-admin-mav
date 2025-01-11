@@ -109,7 +109,7 @@
                     <td>
                         <a href="{{ route('properties.show', $contract->property) }}" class="flex gap-2 text-blue-700"
                             target="blank">
-                            {{ $contract->property->street }}{{", "}}
+                            {{ $contract->property->street }}{{ ', ' }}
                             {{ $contract->property->number }}
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -168,7 +168,7 @@
         </div>
     </div>
 
-
+    {{-- LINHAS DE CONTRATO --}}
     <div class="card bg-white max-w-3xl shadow-xl mx-auto text-black mb-7">
         <div class="card-body">
             {{-- TITLE --}}
@@ -209,11 +209,17 @@
                         <tr>
                             <td>{{ $contractLine->type }}</td>
                             <td>{{ $contractLine->payment_frequency }}</td>
-                            <td>R${{ number_format($contractLine->value, 2, ',', '.') }}</td>
+                            <td>
+                                @if ($contractLine->value_type == 'Percentual')
+                                    {{ $contractLine->percentage }}%
+                                @else
+                                    R${{ number_format($contractLine->value, 2, ',', '.') }}
+                                @endif
+                            </td>
                             <td class="flex justify-end w-clip">
                                 {{-- UPDATE --}}
                                 <div>
-                                    <button onclick="updateLineModal{{$contractLine->id}}.showModal()"
+                                    <button onclick="updateLineModal{{ $contractLine->id }}.showModal()"
                                         class="inline-block border-e p-3 text-gray-700 hover:bg-gray-50 focus:relative"
                                         title="Edit">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -223,7 +229,7 @@
                                         </svg>
                                     </button>
 
-                                    <dialog id="updateLineModal{{$contractLine->id}}" class="modal">
+                                    <dialog id="updateLineModal{{ $contractLine->id }}" class="modal">
                                         <div class="modal-box bg-white">
                                             <div class="flex justify-between items-center">
                                                 <h1 class="text-lg text-black">Editar Linha</h1>
@@ -263,4 +269,40 @@
             </table>
         </div>
     </div>
+
+
+    {{-- PARCELAS --}}
+    <x-card type="show">
+        <div class="flex justify-between">
+            <h2 class="card-title">Parcelas</h2>
+
+            <div>
+                <x-button onclick="addInstallmentModal.showModal()">+</x-button>
+
+                <dialog id="addInstallmentModal" class="modal">
+                    <div class="modal-box bg-white">
+                        <div class="flex justify-between items-center">
+                            <h1 class="text-lg text-black">Adicionar Parcela</h1>
+                            <form method="dialog">
+                                <button class="btn btn-sm btn-circle btn-ghost">✕</button>
+                            </form>
+                        </div>
+                        @include('Installments.create')
+                    </div>
+                    <form method="dialog" class="modal-backdrop">
+                        <button>close</button>
+                    </form>
+                </dialog>
+            </div>
+        </div>
+
+        @if (count($contract->installments) > 0)
+            @include('installments.table', ['installments' => $contract->installments])
+        @else
+            <form action="{{ route('installments.generate', $contract) }}" method="POST">
+                @csrf
+                <x-button class="mt-4 w-full">Gerar Parcelas</x-button>
+            </form>
+        @endif
+    </x-card>
 </x-app-layout>

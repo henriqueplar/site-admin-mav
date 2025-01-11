@@ -32,12 +32,12 @@ class PropertyController extends Controller{
         $request->validate($this->validate);
 
         try {
-            Property::create($request->all());
+            $property = Property::create($request->all());
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
 
-        return redirect()->route('properties.index')->with('success', 'Imóvel criado com sucesso!');
+        return redirect()->route('properties.show', $property)->with('success', 'Imóvel criado com sucesso!');
     }
 
 

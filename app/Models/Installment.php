@@ -25,4 +25,9 @@ class Installment extends Model
     {
         return $this->belongsTo(Contract::class);
     }
+
+    public function lines()
+    {
+        return $this->hasMany(InstallmentLine::class);
+    } 
 }

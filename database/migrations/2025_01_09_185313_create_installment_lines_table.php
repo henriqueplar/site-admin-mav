@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('installment_lines', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('type');
-            $table->string('document');
-            $table->string('name');
-            $table->date('birth');
-            $table->string('phone');
-            $table->string('email');
+            $table->string('description')->nullable();
+            $table->decimal('value', 10, 2);
+
+            //contract
+            $table->unsignedBigInteger('installment_id');
+            $table->foreign('installment_id')->references('id')->on('installments')->onDelete('cascade');
+
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('installment_lines');
     }
 };

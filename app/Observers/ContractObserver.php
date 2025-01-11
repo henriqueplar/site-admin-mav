@@ -2,20 +2,21 @@
 
 namespace App\Observers;
 
+use App\Http\Controllers\ContractController;
 use App\Models\Contract;
 
-class ContractObserver
-{
-    public function updated(Contract $contract)
+class ContractObserver{
+
+    private $contractController;
+
+    public function __construct(ContractController $contractController)
     {
-        // Verifica se as datas de início ou término foram alteradas
-        if ($contract->isDirty('start_date') || $contract->isDirty('end_date')) {
-            $this->recalculateContractValue($contract);
-        }
+        $this->contractController = $contractController;
     }
 
-    private function recalculateContractValue($contract)
-    {
-        // ... (mesma lógica da função recalculateContractValue do ContractLineObserver) ...
+    public function updated(Contract $contract){
+        if ($contract->isDirty('start_date') || $contract->isDirty('end_date')) {
+            $this->contractController->calculateAmount($contract);
+        }
     }
 }

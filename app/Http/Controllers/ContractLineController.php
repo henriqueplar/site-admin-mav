@@ -28,7 +28,7 @@ class ContractLineController extends Controller
             'value' => 'nullable|numeric',
             'percentage' => 'nullable|numeric',
             'payment_frequency' => 'required|string|in:Anual,Mensal',
-            'installments' => 'nullable|integer',
+            'installments' => 'nullable|integer|max:10',
         ]);
 
         ContractLine::create($request->all());
@@ -55,7 +55,7 @@ class ContractLineController extends Controller
             'value' => 'nullable|numeric',
             'percentage' => 'nullable|numeric',
             'payment_frequency' => 'required|string|in:Anual,Mensal',
-            'installments' => 'nullable|integer',
+            'installments' => 'nullable|integer|max:10',
         ]);
 
         $contractLine->update($request->all());

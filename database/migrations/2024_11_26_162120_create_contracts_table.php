@@ -13,16 +13,22 @@ return new class extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->integer('validity');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->float('amount', 8, 2)->nullable; 
+            
+            //property
             $table->unsignedBigInteger('property_id');
+            $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
+            //customer
             $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            //agent
             $table->unsignedBigInteger('agent_id');
-            $table->float('amount', 8, 2); 
-            // Define as chaves estrangeiras
-            $table->foreign('property_id')->references('id')->on('properties');
-            $table->foreign('customer_id')->references('id')->on('customers');
-            $table->foreign('agent_id')->references('id')->on('agents');
+            $table->foreign('agent_id')->references('id')->on('agents')->onDelete('cascade');
+
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
