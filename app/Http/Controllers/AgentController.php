@@ -20,9 +20,9 @@ class AgentController extends Controller
     public function store(Request $request){
         $request->validate($this->validate);
 
-        Agent::create($request->all());
+        $agent = Agent::create($request->all());
 
-        return redirect()->route('agents.index')->with('success', 'Corretor criado com sucesso!');
+        return redirect()->route('agents.show', $agent)->with('success', 'Corretor criado com sucesso!');
     }
 
 

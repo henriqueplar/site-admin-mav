@@ -6,24 +6,30 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    
     public function up(): void
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('address');
+            $table->string('street');
+            $table->string('number')->nullable();
+            $table->string('complement')->nullable();
+            $table->string('neighborhood');
+            $table->string('city');
+            $table->string('state');
+            $table->string('zip_code');
             $table->string('status');
-            $table->unsignedBigInteger('customer_id'); // Chave estrangeira
-            $table->foreign('customer_id')->references('id')->on('customers');
+
+            //customer
+            $table->unsignedBigInteger('customer_id'); 
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('properties');

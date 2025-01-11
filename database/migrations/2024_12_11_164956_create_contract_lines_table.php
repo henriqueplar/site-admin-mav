@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('contract_lines', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('contract_id');
+            $table->id()->autoIncrement();
             $table->string('type'); // taxa de incêndio, condomínio, etc.
             $table->string('value_type'); // valor cheio, percentual
             $table->decimal('value', 10, 2)->nullable(); // valor da linha
@@ -21,7 +20,10 @@ return new class extends Migration
             $table->string('payment_frequency'); // anual, mensal
             $table->integer('installments')->nullable(); // número de parcelas (para IPTU)
             $table->timestamps();
+            $table->softDeletes();
 
+            //contract
+            $table->unsignedBigInteger('contract_id');
             $table->foreign('contract_id')->references('id')->on('contracts')->onDelete('cascade');
         });
     }
